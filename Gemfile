@@ -13,11 +13,11 @@ gem 'bluecloth'
 gem 'jquery-rails'
 
 group :development, :test do
-  gem 'rspec-rails'
+  gem 'rspec-rails', '2.0.1'
   gem 'shoulda'
   gem 'cucumber'
   gem 'cucumber-rails'
-  gem 'webrat'
+  gem 'webrat', '0.7.1'
   gem 'database_cleaner'
   gem 'launchy'
 end
