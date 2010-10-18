@@ -7,6 +7,7 @@ gem 'sqlite3-ruby', :require => 'sqlite3'
 gem 'haml'
 gem 'bluecloth'
 gem 'jquery-rails'
+gem 'gravatar_image_tag'
 
 group :development, :test do
   gem 'rspec-rails', '2.0.1'

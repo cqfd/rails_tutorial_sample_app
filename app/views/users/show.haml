@@ -1,1 +1,3 @@
-%p #{@user.name}, #{@user.email}
+%h1
+  = gravatar_for @user
+  = @user.name
