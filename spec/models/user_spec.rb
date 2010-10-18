@@ -2,8 +2,12 @@ require 'spec_helper'
 
 describe User do
   let(:attr) { 
-    {:name => "Example User", :email => "user@example.com",
-     :password => "password", :password_confirmation => "password"}
+    {
+      :name => "Example User", 
+      :email => "user@example.com",
+      :password => "password", 
+      :password_confirmation => "password"
+    }
   }
 
   it "should create a new instance given valid attributes" do
@@ -91,9 +95,58 @@ describe User do
   end
 
   describe "password encryption" do
-    let(:user) { User.create! attr }
+    before(:each) do
+      @user = User.create! attr
+    end
+
+    let(:user) { @user }
+
     it "should have an encrypted password attribute" do
       user.should respond_to(:encrypted_password)
+    end
+
+    it "should set the encrypted password attribute" do
+      user.encrypted_password.should_not be_blank
+    end
+
+    it "should have a salt attribute" do
+      user.should respond_to(:salt)
+    end
+
+    it "should set the salt attribute" do
+      user.salt.should_not be_blank
+    end
+
+    describe "#has_password?" do
+      it "should exist" do
+        user.should respond_to(:has_password?)
+      end
+
+      it "should return true if the guess matches the password" do
+        user.should have_password(attr[:password])
+      end
+
+      it "should return false if the guess doesn't match the password" do
+        user.should_not have_password('incorrect')
+      end
+    end
+
+    describe "authenticate class method" do
+      it "should exist" do
+        User.should respond_to(:authenticate)
+      end
+
+      it "should return nil on email/password mismatch" do
+        User.authenticate(attr[:email], 'wrong password').should be_nil
+      end
+
+      it "should return nil for an email address with no user" do
+        User.authenticate("bar@foo.com", attr[:password]).should be_nil
+      end
+
+      it "should return the right user if email/password match" do
+        User.authenticate(attr[:email], attr[:password]).should == user
+      end
     end
   end
 end
