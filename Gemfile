@@ -16,4 +16,6 @@ group :development, :test do
   gem 'webrat', '0.7.1'
   gem 'database_cleaner'
   gem 'launchy'
+
+  gem 'factory_girl_rails'
 end
