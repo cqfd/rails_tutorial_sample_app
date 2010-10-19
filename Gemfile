@@ -10,7 +10,8 @@ gem 'jquery-rails'
 gem 'gravatar_image_tag'
 
 group :development, :test do
-  gem 'rspec-rails', '2.0.1'
+  gem 'rspec-rails', '~> 2.0.1'
+  gem 'rspec', '~> 2.0.1'
   gem 'shoulda'
   gem 'cucumber'
   gem 'cucumber-rails'
