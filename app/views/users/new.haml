@@ -19,4 +19,8 @@
     %br
     = f.password_field :password_confirmation
   .actions
-    = f.submit "Create!"
+    = f.submit "Sign up!"
+
+%p 
+  Already have an account?
+  = link_to 'Sign in!', signin_path
