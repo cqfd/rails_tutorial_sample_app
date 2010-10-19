@@ -37,6 +37,26 @@ describe SessionsController do
         flash.now[:error].should =~ /wrong/i
       end
     end
+
+    context "success" do
+      before(:each) do
+        @user = Factory(:user)
+        @session = { :email => @user.email, :password => @user.password }
+      end
+
+      it "should sign the user in" do
+        post :create, :session => @session
+        controller.current_user.should == @user
+        controller.should be_signed_in
+      end
+
+      it "should redirect to the user show page" do
+        post :create, :session => @session
+        # inside of specs, you need to use full named route!
+        response.should redirect_to(user_path(@user))
+      end
+    end
+
   end
 
 end

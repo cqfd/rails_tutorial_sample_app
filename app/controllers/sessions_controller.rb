@@ -1,4 +1,5 @@
 class SessionsController < ApplicationController
+
   def new
     @title = 'Sign in'
   end
@@ -12,7 +13,7 @@ class SessionsController < ApplicationController
       flash.now[:error] = "Something went wrong!"
       render :new
     else
-      cookies[:user_id] = user.id
+      sign_in user
       flash[:success] = "Welcome back!"
       redirect_to user
     end
@@ -21,5 +22,4 @@ class SessionsController < ApplicationController
   def destroy
     
   end
-
 end
