@@ -15,7 +15,8 @@ class SessionsController < ApplicationController
     else
       sign_in user
       flash[:success] = "Welcome back!"
-      redirect_to user
+      redirect_to session[:return_to] || user
+      session.delete(:return_to)
     end
   end
 
