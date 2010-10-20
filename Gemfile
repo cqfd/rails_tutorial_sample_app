@@ -8,6 +8,7 @@ gem 'haml'
 gem 'bluecloth'
 gem 'jquery-rails'
 gem 'gravatar_image_tag'
+gem 'will_paginate', '3.0.pre2'
 
 group :development, :test do
   gem 'rspec-rails', '~> 2.0.1'
@@ -20,4 +21,5 @@ group :development, :test do
   gem 'launchy'
 
   gem 'factory_girl_rails'
+  gem 'faker'
 end
