@@ -22,4 +22,22 @@ class UsersController < ApplicationController
       render :new
     end
   end
+
+  def edit
+    @title = "Edit user"
+    @user = User.find(params[:id])
+  end
+
+  def update
+    @user = User.find_by_id(params[:id])
+
+    if @user.update_attributes(params[:user])
+      flash[:success] = "You updated your profile successfully!"
+      redirect_to @user
+    else
+      @title = "Edit user"
+      flash.now[:error] = "Something went wrong!"
+      render :edit # calls to render don't excecute the controller action!
+    end
+  end
 end
