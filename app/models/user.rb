@@ -1,8 +1,8 @@
 class User < ActiveRecord::Base
   attr_accessor :password
-
-  # these are the only attributes that can be updated using #update_attributes
   attr_accessible :name, :email, :password, :password_confirmation
+
+  has_many :microposts, :dependent => :destroy
 
   validates :name, :presence => true, 
                    :length => { :maximum => 50 }
