@@ -48,6 +48,22 @@ describe UsersController do
         response.should have_selector('a', :href=>"/users?page=2",
                                            :content => "Next")
       end
+
+      it "should have delete links for admins" do
+        @user.toggle!(:admin)
+        other_user = User.all.second
+
+        get :index
+        response.should have_selector('a', :href => user_path(other_user),
+                                           :content => "delete")
+      end
+
+      it "should not have delete links for non-admins" do
+        other_user = User.all.second
+        get :index
+        response.should_not have_selector('a', :href => user_path(other_user),
+                                           :content => "delete")
+      end
     end
   end
 
@@ -260,6 +276,67 @@ describe UsersController do
       it "should require matching users for 'update'" do
         put :update, :id => @user, :user => {}
         response.should redirect_to(root_path)
+      end
+    end
+  end
+
+  describe "DELETE 'destroy'" do
+    before(:each) do
+      @user = Factory(:user)
+    end
+
+    context "as a non-signed-in user" do
+      it "should deny access" do
+        delete :destroy, :id => @user
+        response.should redirect_to(signin_path)
+      end
+    end
+
+    context "as a non-admin user" do
+      it "should protect the action" do
+        test_sign_in(@user)
+        delete :destroy, :id => @user
+        response.should redirect_to(root_path)
+      end
+    end
+
+    context "as an admin" do
+      before(:each) do
+        # note that factories bypass attr_accessible!
+        admin = Factory(:user, :email => "admin@example.com", :admin => true)
+        test_sign_in admin
+      end
+
+      it "should destroy the user" do
+        lambda do
+          delete :destroy, :id => @user
+        end.should change(User, :count).by(-1)
+      end
+
+      it "should redirect to the users index page" do
+        delete :destroy, :id => @user
+        flash[:success].should =~ /user destroyed/i
+        response.should redirect_to(users_path)
+      end
+    end
+
+    context "as an admin trying to destroy herself" do
+      it "should fail" do
+        admin = Factory(:user, :email => "admin@example.com", :admin => true)
+        test_sign_in admin
+
+        lambda do
+          delete :destroy, :id => admin
+        end.should_not change(User, :count)
+      end
+
+      it "should redirect to the users index page" do
+        admin = Factory(:user, :email => "admin@example.com", :admin => true)
+        test_sign_in admin
+
+        delete :destroy, :id => admin
+        flash[:error].should =~ /you can't destroy your own admin account/i
+        response.should redirect_to(users_path)
       end
     end
   end

@@ -60,7 +60,7 @@ jQuery(function ($) {
     /**
      *  confirmation handler
      */
-    $('a[data-confirm],input[data-confirm]').live('click', function () {
+    $('body').delegate('a[data-confirm],input[data-confirm]', 'click', function (e) {
         var el = $(this);
         if (el.triggerAndReturn('confirm')) {
             if (!confirm(el.attr('data-confirm'))) {
