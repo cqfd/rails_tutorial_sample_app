@@ -2,7 +2,9 @@ SampleApp::Application.routes.draw do
   root :to => 'pages#home'
 
   resources :sessions, :only => [:new, :create, :destroy]
-  resources :users
+  resources :users do
+    resources :microposts
+  end
 
   get 'pages/home'
   get 'pages/contact'
