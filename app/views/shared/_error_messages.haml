@@ -2,7 +2,7 @@
   #error_explanation
     %h2 
       #{pluralize(object.errors.count, "error")} prevented 
-      this #{object.class.to_s.downcase} from being saved:
+      this #{object.class.to_s.underscore.humanize.downcase} from being saved:
     %p There were problems with the following fields:
     %ul
       - object.errors.full_messages.each do |msg|

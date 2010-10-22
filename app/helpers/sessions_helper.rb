@@ -43,4 +43,8 @@ module SessionsHelper
     def store_location
       session[:return_to] = request.path
     end
+
+    def authenticate
+      deny_access unless signed_in?
+    end
 end
