@@ -29,6 +29,13 @@ class User < ActiveRecord::Base
     encrypted_password == encrypt(guess)
   end
 
+  def feed
+    # the ? notation helps avoid SQL injection
+    # it ensures that variables are escaped
+    # always always always escape your sql!
+    Micropost.where('user_id = ?', id)
+  end
+
   private
     def encrypt_password
       self.salt = make_salt if new_record?
